@@ -1,26 +1,19 @@
 package com.solactive.tickservice.util;
 
 import com.solactive.tickservice.entity.Tick;
-import com.solactive.tickservice.exception.ApiException;
 
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-
 public class CommonUtil {
 
     public static List<Tick> parseTicks(List<String> tickStrings) {
-        try {
-            return tickStrings
-                    .stream()
-                    .map(tickStr -> parseTickToEntity.apply(tickStr))
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new ApiException("Invalid Format", BAD_REQUEST);
-        }
+        return tickStrings
+                .stream()
+                .map(tickStr -> parseTickToEntity.apply(tickStr))
+                .collect(Collectors.toList());
     }
 
     private static Function<String, Tick> parseTickToEntity = (tickString) -> {

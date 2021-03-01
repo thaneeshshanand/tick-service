@@ -5,7 +5,6 @@ import com.solactive.tickservice.dto.ExportTicksDto;
 import com.solactive.tickservice.dto.TickDto;
 import com.solactive.tickservice.dto.mapper.TickEntityToDtoMapper;
 import com.solactive.tickservice.entity.ExportIndex;
-import com.solactive.tickservice.exception.ApiException;
 import com.solactive.tickservice.repository.ExportIndexRepository;
 import com.solactive.tickservice.repository.TickRepository;
 import com.solactive.tickservice.util.CommonUtil;
@@ -31,7 +30,7 @@ public class TickService {
 
     private TickEntityToDtoMapper mapper = Mappers.getMapper(TickEntityToDtoMapper.class);
 
-    public List<TickDto> listTicks(String ric) throws ApiException {
+    public List<TickDto> listTicks(String ric) {
         return tickRepository
                 .findByRic(ric)
                 .stream()
@@ -39,7 +38,7 @@ public class TickService {
                 .collect(Collectors.toList());
     }
 
-    public void consumeTicks(List<String> tickStrs) throws ApiException {
+    public void consumeTicks(List<String> tickStrs) {
         var tickList = CommonUtil.parseTicks(tickStrs);
         tickList.forEach(tick -> {
             var tickEntity = tickRepository.save(tick);
@@ -54,7 +53,7 @@ public class TickService {
         });
     }
 
-    public ExportTicksDto exportTicks() throws ApiException {
+    public ExportTicksDto exportTicks() {
         var exportTicksDto = new ExportTicksDto();
         var exportIndexOptional = indexRepository.findFirstByStatus(READY);
         exportIndexOptional.ifPresent(exportIndex -> {
@@ -73,7 +72,7 @@ public class TickService {
         return exportTicksDto;
     }
 
-    public void acknowledgeExportTicks(AckDto ack) throws ApiException {
+    public void acknowledgeExportTicks(AckDto ack) {
         indexRepository
                 .findById(ack.getExportIndexId())
                 .ifPresent(exportIndex -> {

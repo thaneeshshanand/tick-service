@@ -16,8 +16,6 @@ import java.util.Date;
 @Component
 public class ExportTask {
 
-    private static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-
     @Autowired
     private TickClient tickClient;
 
@@ -26,7 +24,6 @@ public class ExportTask {
 
     @Scheduled(fixedDelay = 5000)
     public void exportTicks() {
-        log.info("The time is now {}", dateFormat.format(new Date()));
         var exportTicksDto = tickClient.getTicks();
         System.out.println(exportTicksDto);
         long exportIndex = exportTicksDto.getExportIndexId();
