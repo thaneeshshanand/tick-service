@@ -1,0 +1,138 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "tick-service",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/ticks/consume": {
+            "post": {
+                "requestBody": {
+                    "description": "Consume Ticks request body",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "examples": {
+                                "ticks-request-body": {
+                                    "value": [
+                                        "TIMESTAMP=1614398881|PRICE=5.24|CLOSE_PRICE=|CURRENCY=EUR|RIC=AAPL.OQ",
+                                        "TIMESTAMP=1614398881|PRICE=5.24|CLOSE_PRICE=|CURRENCY=EUR|RIC=IBM.N",
+                                        "TIMESTAMP=1614398881|PRICE=|CLOSE_PRICE=7.5|CURRENCY=EUR|RIC=AAPL.OQ"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "description": "Consume Ticks response"
+                    }
+                },
+                "summary": "Consume ticks"
+            }
+        },
+        "/ticks": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/tick"
+                                    }
+                                },
+                                "examples": {
+                                    "list-ticks-response": {
+                                        "value": [
+                                            {
+                                                "timeStamp": "1970-01-19T16:26:38.881+00:00",
+                                                "price": 5.24,
+                                                "closePrice": 0,
+                                                "currency": "EUR",
+                                                "ric": "AAPL.OQ"
+                                            },
+                                            {
+                                                "timeStamp": "1970-01-19T16:26:38.881+00:00",
+                                                "price": 0,
+                                                "closePrice": 7.5,
+                                                "currency": "EUR",
+                                                "ric": "AAPL.OQ"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "List ticks response"
+                    }
+                },
+                "operationId": "list-ticks",
+                "summary": "List ticks for given RIC"
+            },
+            "parameters": [
+                {
+                    "name": "ric",
+                    "description": "",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "query",
+                    "required": true
+                }
+            ]
+        }
+    },
+    "components": {
+        "schemas": {
+            "tick": {
+                "description": "",
+                "required": [
+                    "timeStamp",
+                    "price",
+                    "closePrice",
+                    "currency",
+                    "ric"
+                ],
+                "type": "object",
+                "properties": {
+                    "timeStamp": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "price": {
+                        "description": "",
+                        "type": "number"
+                    },
+                    "closePrice": {
+                        "description": "",
+                        "type": "number"
+                    },
+                    "currency": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "ric": {
+                        "description": "",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "timeStamp": "1970-01-19T16:26:38.881+00:00",
+                    "price": 5.24,
+                    "closePrice": 0,
+                    "currency": "EUR",
+                    "ric": "AAPL.OQ"
+                }
+            }
+        }
+    }
+}
